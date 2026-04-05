@@ -1,5 +1,6 @@
 package com.example.citucares
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -11,7 +12,6 @@ import com.example.citucares.utils.TokenManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var passwordInput: EditText
     lateinit var loginBtn: Button
     lateinit var loading: ProgressBar
-
-    private val API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJueWd2eGVzbWJpdW12d3Jqam15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5ODg1MjIsImV4cCI6MjA4NjU2NDUyMn0.D4JN12XSWvXkUriWeYB5mCXkqxY8tB_pAX4bcWr3NNE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         val request = LoginRequest(email, password)
 
-        RetrofitClient.instance.login(
-            API_KEY,
-            "application/json",
-            "application/json",
-            request
-        )
+        RetrofitClient.instance.loginUser(request)
             .enqueue(object : Callback<LoginResponse> {
 
                 override fun onResponse(
@@ -71,27 +64,32 @@ class MainActivity : AppCompatActivity() {
                     loading.visibility = View.GONE
                     loginBtn.isEnabled = true
 
-                    if (response.isSuccessful) {
-                        val token = response.body()?.access_token
+                    if (response.isSuccessful && response.body() != null) {
 
-                        if (token != null) {
-                            TokenManager.save(this@MainActivity, token)
-                            toast("Login Success ✅")
-                        } else {
-                            toast("Login failed ❌ (no token)")
-                        }
+                        val user = response.body()!!
+
+// Save session (you already have this)
+                        TokenManager.save(this@MainActivity, user.email)
+
+                        toast("Login Success ✅")
+
+// 🚀 NAVIGATE TO CHAT
+                        val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                        startActivity(intent)
+
+// Optional: close login screen so user can't go back
+                        finish()
 
                     } else {
                         toast("Invalid credentials ❌")
-                        println("CODE: ${response.code()}")
-                        println("ERROR: ${response.errorBody()?.string()}")
+                        println(response.errorBody()?.string())
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     loading.visibility = View.GONE
                     loginBtn.isEnabled = true
-                    toast("No internet ❌")
+                    toast("Server error ❌")
                 }
             })
     }

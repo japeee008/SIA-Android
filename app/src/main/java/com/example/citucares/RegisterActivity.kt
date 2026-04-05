@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.citucares.api.RetrofitClient
-import com.example.citucares.model.LoginRequest
-import com.example.citucares.model.LoginResponse
-import retrofit2.*
+import com.example.citucares.model.RegisterRequest
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var studentIdInput: EditText
     lateinit var emailInput: EditText
     lateinit var passwordInput: EditText
+    lateinit var confirmPasswordInput: EditText // ✅ NEW
     lateinit var fnameInput: EditText
-    lateinit var lnameInput: EditText   // ✅ added
-    lateinit var miInput: EditText      // ✅ added
+    lateinit var lnameInput: EditText
+    lateinit var miInput: EditText
     lateinit var registerBtn: Button
     lateinit var cancelBtn: Button
-
-    private val API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJueWd2eGVzbWJpdW12d3Jqam15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5ODg1MjIsImV4cCI6MjA4NjU2NDUyMn0.D4JN12XSWvXkUriWeYB5mCXkqxY8tB_pAX4bcWr3NNE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +28,10 @@ class RegisterActivity : AppCompatActivity() {
         studentIdInput = findViewById(R.id.studentIdInput)
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
+        confirmPasswordInput = findViewById(R.id.confirmPasswordInput) // ✅
         fnameInput = findViewById(R.id.fnameInput)
-        lnameInput = findViewById(R.id.lnameInput)   // ✅ added
-        miInput = findViewById(R.id.miInput)         // ✅ added
+        lnameInput = findViewById(R.id.lnameInput)
+        miInput = findViewById(R.id.miInput)
         registerBtn = findViewById(R.id.registerBtn)
         cancelBtn = findViewById(R.id.cancelBtn)
 
@@ -42,91 +43,58 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
+
+        val studentId = studentIdInput.text.toString()
         val email = emailInput.text.toString()
         val password = passwordInput.text.toString()
+        val confirmPassword = confirmPasswordInput.text.toString() // ✅ FIX
+        val fname = fnameInput.text.toString()
+        val lname = lnameInput.text.toString()
+        val mi = miInput.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            toast("Fill all fields")
+        if (studentId.isEmpty() || email.isEmpty() || password.isEmpty()
+            || fname.isEmpty() || lname.isEmpty()) {
+
+            toast("Please fill all required fields ❌")
             return
         }
 
-        val request = LoginRequest(email, password)
+        if (password != confirmPassword) {
+            toast("Passwords do not match ❌")
+            return
+        }
 
-        RetrofitClient.instance.register(
-            API_KEY,
-            "application/json",
-            "application/json",
-            request
-        ).enqueue(object : Callback<LoginResponse> {
-
-            override fun onResponse(
-                call: Call<LoginResponse>,
-                response: Response<LoginResponse>
-            ) {
-                println("REGISTER CODE: ${response.code()}")
-                println("REGISTER BODY: ${response.body()}")
-                println("REGISTER ERROR: ${response.errorBody()?.string()}")
-
-                if (response.isSuccessful && response.body() != null) {
-
-                    val userId = response.body()!!.user!!.id
-                    val userEmail = response.body()!!.user!!.email
-                    val accessToken = response.body()!!.access_token
-
-                    if (accessToken != null) {
-                        insertUserToTable(userId, userEmail, accessToken)
-                        toast("Registered ✅")
-                        finish()
-                    } else {
-                        toast("No access token ❌")
-                    }
-
-                } else {
-                    toast("Register failed ❌")
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                println("REGISTER FAILURE: ${t.message}")
-                toast("No internet ❌")
-            }
-        })
-    }
-
-    private fun insertUserToTable(userId: String, email: String, accessToken: String) {
-
-        val data = mapOf(
-            "user_id" to userId,
-            "email" to email,
-            "fname" to fnameInput.text.toString(),
-            "lname" to lnameInput.text.toString(),              // ✅ added
-            "middle_initial" to miInput.text.toString(),        // ✅ added
-            "institutional_id" to studentIdInput.text.toString()
+        val request = RegisterRequest(
+            studentId = studentId,
+            fname = fname,
+            lname = lname,
+            middleInitial = mi,
+            email = email,
+            password = password,
+            confirmPassword = confirmPassword, // ✅ FIXED
         )
 
-        RetrofitClient.instance.insertUser(
-            API_KEY,
-            "Bearer $accessToken",
-            "application/json",
-            "return=representation",
-            data
-        ).enqueue(object : Callback<Void> {
+        println("REQUEST DEBUG: $request") // 🔥 DEBUG
 
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                println("INSERT CODE: ${response.code()}")
-                println("INSERT ERROR: ${response.errorBody()?.string()}")
+        RetrofitClient.instance.registerUser(request)
+            .enqueue(object : Callback<String> {
 
-                if (response.isSuccessful) {
-                    println("Inserted to users table ✅")
-                } else {
-                    println("Insert failed ❌")
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                    if (response.isSuccessful) {
+                        toast("Registered Successfully ✅")
+                        finish()
+                    } else {
+                        toast("Registration Failed ❌")
+                        println("ERROR: ${response.errorBody()?.string()}")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                println("INSERT FAILURE: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    toast("Server Error ❌")
+                    println("FAIL: ${t.message}")
+                }
+            })
     }
 
     private fun toast(msg: String) {

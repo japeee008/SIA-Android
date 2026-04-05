@@ -5,12 +5,12 @@ import android.content.Context
 object TokenManager {
 
     private const val PREF = "APP"
-    private const val KEY = "TOKEN"
+    private const val KEY = "USER"
 
-    fun save(context: Context, token: String) {
+    fun save(context: Context, value: String) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
             .edit()
-            .putString(KEY, token)
+            .putString(KEY, value)
             .apply()
     }
 
