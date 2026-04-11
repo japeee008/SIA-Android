@@ -1,4 +1,4 @@
-package com.example.citucares.model
+package com.example.citucares.features.auth
 
 data class LoginResponse(
     val userId: Long,

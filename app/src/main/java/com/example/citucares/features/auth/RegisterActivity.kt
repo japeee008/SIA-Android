@@ -1,10 +1,10 @@
-package com.example.citucares
+package com.example.citucares.features.auth
 
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.citucares.api.RetrofitClient
-import com.example.citucares.model.RegisterRequest
+import com.example.citucares.R
+import com.example.citucares.core.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
