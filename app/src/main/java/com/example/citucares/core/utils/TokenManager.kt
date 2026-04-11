@@ -1,4 +1,4 @@
-package com.example.citucares.utils
+package com.example.citucares.core.utils
 
 import android.content.Context
 

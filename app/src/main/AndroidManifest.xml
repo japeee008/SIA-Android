@@ -16,13 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ChatActivity"
+            android:name=".features.auth.AuthPresenter"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".features.chat.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".features.auth.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
