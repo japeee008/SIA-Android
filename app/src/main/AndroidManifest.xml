@@ -15,9 +15,7 @@
         android:theme="@style/Theme.CITUCARES"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".features.auth.AuthPresenter"
-            android:exported="false" />
+
         <activity
             android:name=".features.chat.ChatActivity"
             android:exported="false" />

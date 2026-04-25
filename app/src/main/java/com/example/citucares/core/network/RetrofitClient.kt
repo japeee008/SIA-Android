@@ -3,6 +3,7 @@ package com.example.citucares.core.network
 import com.example.citucares.core.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetrofitClient {
 
@@ -15,6 +16,9 @@ object RetrofitClient {
     val instance: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            // Scalars first: handles plain String responses from Spring Boot
+            .addConverterFactory(ScalarsConverterFactory.create())
+            // Gson second: handles JSON objects like LoginResponse
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)

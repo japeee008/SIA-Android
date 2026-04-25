@@ -1,5 +1,6 @@
 package com.example.citucares.features.auth
 
+import android.util.Log
 import com.example.citucares.core.network.RetrofitClient
 import com.example.citucares.core.utils.TokenManager
 import retrofit2.Call
@@ -29,21 +30,24 @@ class AuthPresenter(private val view: LoginActivity) {
                     view.showLoading(false)
 
                     if (response.isSuccessful && response.body() != null) {
-
                         val user = response.body()!!
 
-                        // ✅ FIX: use email instead of token
                         TokenManager.save(view, user.email)
 
                         view.onLoginSuccess()
-
                     } else {
+                        Log.e("LOGIN_ERROR", "Code: ${response.code()}")
+                        Log.e("LOGIN_ERROR", "Error body: ${response.errorBody()?.string()}")
+
                         view.showError("Invalid credentials ❌")
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     view.showLoading(false)
+
+                    Log.e("LOGIN_ERROR", "Failure: ${t.message}", t)
+
                     view.showError("Server error ❌")
                 }
             })
