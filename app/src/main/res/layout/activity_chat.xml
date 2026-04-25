@@ -10,30 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F5F5F5">
+        android:background="#F6F6F6">
 
-        <!-- 🔴 HEADER -->
+        <!-- HEADER -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="#800000"
-            android:padding="12dp">
+            android:layout_height="72dp"
+            android:background="#8B0000"
+            android:padding="16dp"
+            android:elevation="4dp">
 
             <ImageView
                 android:id="@+id/menuBtn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:src="@android:drawable/ic_menu_sort_by_size"
                 android:tint="#FFFFFF"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"/>
 
-            <!-- ✅ FIXED HERE -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,33 +42,33 @@
                     android:text="CITU-CARE"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chat Assistant"
-                    android:textColor="#DDDDDD"
+                    android:textColor="#E0E0E0"
                     android:textSize="12sp"/>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/profileBtn"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@android:drawable/ic_menu_myplaces"
                 android:tint="#FFFFFF"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
 
-        <!-- 🟡 CHAT AREA -->
+        <!-- CHAT AREA -->
         <ScrollView
             android:id="@+id/chatScroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <LinearLayout
                 android:id="@+id/chatContainer"
@@ -75,105 +76,133 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Greeting -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Hello! 👋 I'm your chatbot assistant.\nHow can I help you today?"
-                    android:textSize="16sp"
-                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:textColor="#444444"
                     android:gravity="center"
-                    android:layout_marginBottom="16dp"/>
-
-                <!-- Suggestions -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        style="@style/SuggestionButton"
-                        android:text="How to apply as a new student?"/>
-
-                    <Button
-                        style="@style/SuggestionButton"
-                        android:text="What are the requirements for enrolling in college?"/>
-
-                    <Button
-                        style="@style/SuggestionButton"
-                        android:text="Where do I access my grades?"/>
-
-                    <Button
-                        style="@style/SuggestionButton"
-                        android:text="How do I reset my student portal password?"/>
-
-                    <Button
-                        style="@style/SuggestionButton"
-                        android:text="Can I pay my tuition in installments?"/>
-                </LinearLayout>
-
+                    android:layout_marginBottom="20dp"/>
             </LinearLayout>
         </ScrollView>
 
-        <!-- ⚫ INPUT BAR -->
+        <!-- INPUT BAR -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:padding="8dp"
-            android:elevation="8dp"
-            android:orientation="horizontal">
+            android:elevation="6dp"
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/messageInput"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:hint="Type your message..."
-                android:background="#EEEEEE"
-                android:padding="12dp"
-                android:layout_marginEnd="8dp"/>
+                android:textSize="14sp"
+                android:background="@drawable/bg_input"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginEnd="10dp"/>
 
             <ImageButton
                 android:id="@+id/sendBtn"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="#FFD700"
-                android:src="@android:drawable/ic_menu_send"/>
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_send_btn"
+                android:src="@android:drawable/ic_menu_send"
+                android:tint="#000000"/>
         </LinearLayout>
 
     </LinearLayout>
 
-    <!-- 🔵 SIDEBAR -->
+    <!-- SIDEBAR -->
     <LinearLayout
-        android:layout_width="260dp"
+        android:id="@+id/sidebarMenu"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
-        android:background="#800000"
-        android:padding="16dp">
+        android:background="#8B0000"
+        android:padding="20dp">
+
+        <!-- Sidebar Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="30dp">
+
+            <TextView
+                android:id="@+id/backBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="←"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/sidebarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginStart="10dp"/>
+        </LinearLayout>
+
+        <!-- Main Settings Menu -->
+        <LinearLayout
+            android:id="@+id/mainSettingsMenu"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/generalBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="General"
+                style="@style/SidebarItem"/>
+
+            <TextView
+                android:id="@+id/accountBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Account"
+                android:textColor="#FFD700"
+                style="@style/SidebarItem"/>
+
+            <TextView
+                android:id="@+id/personalizationBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Personalization"
+                style="@style/SidebarItem"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_marginBottom="20dp"/>
-
-        <Button
+            android:id="@+id/logoutBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+ New Chat"
-            android:background="#FFD700"
-            android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Settings"
-            android:background="#FFD700"/>
-
+            android:text="Logout"
+            android:textColor="#FFD700"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"/>
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
