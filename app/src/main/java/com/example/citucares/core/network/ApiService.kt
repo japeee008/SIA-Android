@@ -10,6 +10,8 @@ import com.example.citucares.features.chat.ChatSession
 import com.example.citucares.features.settings.UpdateProfileRequest
 import com.example.citucares.features.settings.UpdateProfileResponse
 import com.example.citucares.features.settings.ChangePasswordRequest
+import com.example.citucares.features.auth.ForgotPasswordRequest
+import com.example.citucares.features.auth.ForgotPasswordResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -56,4 +58,9 @@ interface ApiService {
     fun changePassword(
         @Body request: ChangePasswordRequest
     ): Call<String>
+
+    @POST("auth/forgot-password")
+    fun forgotPassword(
+        @Body request: ForgotPasswordRequest
+    ): Call<ForgotPasswordResponse>
 }
