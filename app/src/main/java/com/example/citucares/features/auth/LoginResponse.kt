@@ -5,5 +5,6 @@ data class LoginResponse(
     val email: String,
     val fname: String,
     val lname: String,
-    val role: String
+    val role: String,
+    val institutionalId: String?
 )
