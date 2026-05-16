@@ -1,6 +1,6 @@
 package com.example.citucares.core.network
 
-import com.example.citucares.core.ApiService
+import com.example.citucares.core.network.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
