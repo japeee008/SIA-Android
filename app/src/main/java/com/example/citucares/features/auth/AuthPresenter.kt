@@ -57,4 +57,46 @@ class AuthPresenter(private val view: LoginActivity) {
                 }
             })
     }
+
+    fun forgotPassword(email: String) {
+        if (email.isEmpty()) {
+            view.showError("Please enter your email")
+            return
+        }
+
+        view.showLoading(true)
+
+        val request = ForgotPasswordRequest(email)
+
+        RetrofitClient.instance.forgotPassword(request)
+            .enqueue(object : Callback<ForgotPasswordResponse> {
+
+                override fun onResponse(
+                    call: Call<ForgotPasswordResponse>,
+                    response: Response<ForgotPasswordResponse>
+                ) {
+                    view.showLoading(false)
+
+                    if (response.isSuccessful && response.body() != null) {
+                        val resetToken = response.body()!!.resetToken
+                        view.openResetPasswordPage(resetToken)
+                    } else {
+                        Log.e("FORGOT_PASSWORD", "Code: ${response.code()}")
+                        Log.e("FORGOT_PASSWORD", "Error body: ${response.errorBody()?.string()}")
+
+                        if (response.code() == 404) {
+                            view.showError("Email not found ❌")
+                        } else {
+                            view.showError("Unable to request password reset ❌")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                    view.showLoading(false)
+                    Log.e("FORGOT_PASSWORD", "Failure: ${t.message}", t)
+                    view.showError("Server error ❌")
+                }
+            })
+    }
 }
