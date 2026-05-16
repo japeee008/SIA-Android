@@ -302,4 +302,12 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
             chatScroll.fullScroll(View.FOCUS_DOWN)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (::profileBtn.isInitialized) {
+            setupProfileButton()
+        }
+    }
 }

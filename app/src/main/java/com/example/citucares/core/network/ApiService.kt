@@ -7,10 +7,15 @@ import com.example.citucares.features.chat.ChatHistoryMessage
 import com.example.citucares.features.chat.ChatRequest
 import com.example.citucares.features.chat.ChatResponse
 import com.example.citucares.features.chat.ChatSession
+import com.example.citucares.features.settings.UpdateProfileRequest
+import com.example.citucares.features.settings.UpdateProfileResponse
+import com.example.citucares.features.settings.ChangePasswordRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -24,6 +29,12 @@ interface ApiService {
     fun registerUser(
         @Body request: RegisterRequest
     ): Call<String>
+
+    @PUT("users/{id}")
+    fun updateUserProfile(
+        @Path("id") userId: Long,
+        @Body request: UpdateProfileRequest
+    ): Call<UpdateProfileResponse>
 
     @POST("chat")
     fun sendMessage(
@@ -40,4 +51,9 @@ interface ApiService {
         @Query("userId") userId: Long,
         @Query("sessionId") sessionId: Long
     ): Call<List<ChatHistoryMessage>>
+
+    @POST("auth/change-password")
+    fun changePassword(
+        @Body request: ChangePasswordRequest
+    ): Call<String>
 }
