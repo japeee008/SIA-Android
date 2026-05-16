@@ -32,11 +32,14 @@ class AuthPresenter(private val view: LoginActivity) {
                     if (response.isSuccessful && response.body() != null) {
                         val user = response.body()!!
 
-                        Log.d("LOGIN_SUCCESS", "User ID: ${user.userId}, Email: ${user.email}")
+                        Log.d(
+                            "LOGIN_SUCCESS",
+                            "User ID: ${user.userId}, Email: ${user.email}, Name: ${user.fname} ${user.lname}, Role: ${user.role}"
+                        )
 
                         TokenManager.save(view, user.email)
 
-                        view.onLoginSuccess(user.userId)
+                        view.onLoginSuccess(user)
                     } else {
                         Log.e("LOGIN_ERROR", "Code: ${response.code()}")
                         Log.e("LOGIN_ERROR", "Error body: ${response.errorBody()?.string()}")

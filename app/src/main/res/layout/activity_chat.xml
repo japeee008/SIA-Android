@@ -27,7 +27,8 @@
                 android:src="@android:drawable/ic_menu_sort_by_size"
                 android:tint="#FFFFFF"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="Menu" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,24 +43,28 @@
                     android:text="CITU-CARE"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chat Assistant"
                     android:textColor="#E0E0E0"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/profileBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@android:drawable/ic_menu_myplaces"
-                android:tint="#FFFFFF"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_profile_circle"
+                android:contentDescription="Profile"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/citu_logo" />
+
         </RelativeLayout>
 
         <!-- CHAT AREA -->
@@ -74,17 +79,7 @@
                 android:id="@+id/chatContainer"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello! 👋 I'm your chatbot assistant.\nHow can I help you today?"
-                    android:textSize="15sp"
-                    android:textColor="#444444"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp"/>
-            </LinearLayout>
+                android:layout_height="wrap_content" />
         </ScrollView>
 
         <!-- INPUT BAR -->
@@ -107,7 +102,7 @@
                 android:background="@drawable/bg_input"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp" />
 
             <ImageButton
                 android:id="@+id/sendBtn"
@@ -115,7 +110,8 @@
                 android:layout_height="48dp"
                 android:background="@drawable/bg_send_btn"
                 android:src="@android:drawable/ic_menu_send"
-                android:tint="#000000"/>
+                android:tint="#000000"
+                android:contentDescription="Send" />
         </LinearLayout>
 
     </LinearLayout>
@@ -123,12 +119,12 @@
     <!-- SIDEBAR -->
     <LinearLayout
         android:id="@+id/sidebarMenu"
-        android:layout_width="300dp"
+        android:layout_width="215dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
         android:background="#8B0000"
-        android:padding="20dp">
+        android:padding="16dp">
 
         <!-- Sidebar Header -->
         <LinearLayout
@@ -136,62 +132,72 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="30dp">
+            android:layout_marginBottom="18dp">
 
             <TextView
                 android:id="@+id/backBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:text="←"
                 android:textColor="#FFFFFF"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:gravity="center" />
 
             <TextView
                 android:id="@+id/sidebarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Settings"
+                android:text="CITU-CARE"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginStart="10dp"/>
+                android:textSize="17sp"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Main Settings Menu -->
-        <LinearLayout
-            android:id="@+id/mainSettingsMenu"
-            android:orientation="vertical"
+        <!-- New Chat -->
+        <Button
+            android:id="@+id/newChatBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="48dp"
+            android:text="+  New Chat"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:backgroundTint="#FFD700"
+            android:layout_marginBottom="18dp" />
 
-            <TextView
-                android:id="@+id/generalBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="General"
-                style="@style/SidebarItem"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RECENT CHATS"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:id="@+id/accountBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Account"
-                android:textColor="#FFD700"
-                style="@style/SidebarItem"/>
-
-            <TextView
-                android:id="@+id/personalizationBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Personalization"
-                style="@style/SidebarItem"/>
-        </LinearLayout>
-
-        <Space
+        <!-- Recent Sessions Scroll Area -->
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:fillViewport="false">
+
+            <LinearLayout
+                android:id="@+id/sessionListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <!-- Bottom Buttons -->
+        <Button
+            android:id="@+id/settingsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Settings"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:backgroundTint="#FFD700"
+            android:layout_marginTop="12dp" />
 
         <TextView
             android:id="@+id/logoutBtn"
@@ -200,9 +206,10 @@
             android:text="Logout"
             android:textColor="#FFD700"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="8dp" />
+
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

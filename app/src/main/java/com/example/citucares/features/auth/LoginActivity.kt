@@ -45,11 +45,16 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.isEnabled = !isLoading
     }
 
-    fun onLoginSuccess(userId: Long) {
+    fun onLoginSuccess(user: LoginResponse) {
         Toast.makeText(this, "Login Success ✅", Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, ChatActivity::class.java)
-        intent.putExtra("USER_ID", userId)
+        intent.putExtra("USER_ID", user.userId)
+        intent.putExtra("EMAIL", user.email)
+        intent.putExtra("FNAME", user.fname)
+        intent.putExtra("LNAME", user.lname)
+        intent.putExtra("ROLE", user.role)
+        intent.putExtra("INSTITUTIONAL_ID", user.institutionalId ?: "")
 
         startActivity(intent)
         finish()
