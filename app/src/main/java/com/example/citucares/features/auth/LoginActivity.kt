@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn.setOnClickListener {
             presenter.login(
-                emailInput.text.toString(),
+                emailInput.text.toString().trim(),
                 passwordInput.text.toString()
             )
         }
@@ -45,10 +45,13 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.isEnabled = !isLoading
     }
 
-    fun onLoginSuccess() {
+    fun onLoginSuccess(userId: Long) {
         Toast.makeText(this, "Login Success ✅", Toast.LENGTH_SHORT).show()
 
-        startActivity(Intent(this, ChatActivity::class.java))
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+
+        startActivity(intent)
         finish()
     }
 

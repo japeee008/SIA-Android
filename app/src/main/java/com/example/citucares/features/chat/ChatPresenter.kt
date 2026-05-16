@@ -6,7 +6,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChatPresenter(private val view: ChatContract.View) : ChatContract.Presenter {
+class ChatPresenter(
+    private val view: ChatContract.View,
+    private val userId: Long
+) : ChatContract.Presenter {
 
     private var sessionId: Long? = null
 
@@ -16,14 +19,22 @@ class ChatPresenter(private val view: ChatContract.View) : ChatContract.Presente
             return
         }
 
+        if (userId == -1L) {
+            view.showError("User session error. Please login again.")
+            return
+        }
+
         view.addUserMessage(message)
         view.clearInput()
         view.showLoading(true)
 
         val request = ChatRequest(
             message = message,
+            userId = userId,
             sessionId = sessionId
         )
+
+        Log.d("CHAT_REQUEST", "Request: $request")
 
         RetrofitClient.instance.sendMessage(request)
             .enqueue(object : Callback<ChatResponse> {
@@ -40,8 +51,10 @@ class ChatPresenter(private val view: ChatContract.View) : ChatContract.Presente
                         sessionId = chatResponse.sessionId
                         view.addBotMessage(chatResponse.reply)
                     } else {
+                        val errorBody = response.errorBody()?.string()
+
                         Log.e("CHAT_ERROR", "Code: ${response.code()}")
-                        Log.e("CHAT_ERROR", "Error body: ${response.errorBody()?.string()}")
+                        Log.e("CHAT_ERROR", "Error body: $errorBody")
 
                         view.addBotMessage("Sorry, I couldn't process your message.")
                     }
