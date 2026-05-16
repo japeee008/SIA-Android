@@ -1,8 +1,8 @@
-package com.example.citucares.core
+package com.example.citucares.core.network
 
 import com.example.citucares.features.auth.LoginRequest
-import com.example.citucares.features.auth.RegisterRequest
 import com.example.citucares.features.auth.LoginResponse
+import com.example.citucares.features.auth.RegisterRequest
 import com.example.citucares.features.chat.ChatRequest
 import com.example.citucares.features.chat.ChatResponse
 import retrofit2.Call
