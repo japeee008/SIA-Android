@@ -1,6 +1,7 @@
 package com.example.citucares.features.auth
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -21,10 +22,21 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        window.statusBarColor = Color.parseColor("#8B0000")
+        window.navigationBarColor = Color.BLACK
+
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
         loginBtn = findViewById(R.id.loginBtn)
         loading = findViewById(R.id.loading)
+
+        emailInput.setTextColor(Color.parseColor("#111111"))
+        emailInput.setHintTextColor(Color.parseColor("#777777"))
+        emailInput.alpha = 1f
+
+        passwordInput.setTextColor(Color.parseColor("#111111"))
+        passwordInput.setHintTextColor(Color.parseColor("#777777"))
+        passwordInput.alpha = 1f
 
         presenter = AuthPresenter(this)
 
@@ -42,7 +54,21 @@ class LoginActivity : AppCompatActivity() {
 
     fun showLoading(isLoading: Boolean) {
         loading.visibility = if (isLoading) View.VISIBLE else View.GONE
+
         loginBtn.isEnabled = !isLoading
+        loginBtn.alpha = if (isLoading) 0.85f else 1f
+
+        emailInput.isEnabled = true
+        passwordInput.isEnabled = true
+
+        emailInput.alpha = 1f
+        passwordInput.alpha = 1f
+
+        emailInput.setTextColor(Color.parseColor("#111111"))
+        emailInput.setHintTextColor(Color.parseColor("#777777"))
+
+        passwordInput.setTextColor(Color.parseColor("#111111"))
+        passwordInput.setHintTextColor(Color.parseColor("#777777"))
     }
 
     fun onLoginSuccess(user: LoginResponse) {
