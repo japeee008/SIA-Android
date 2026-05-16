@@ -126,7 +126,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
-        android:background="#8B0000"
+        android:background="#810000"
         android:padding="16dp">
 
         <!-- Sidebar Header -->
