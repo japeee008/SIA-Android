@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.example.citucares.R
-import com.example.citucares.features.auth.LoginActivity
 import com.example.citucares.features.settings.SettingsActivity
 
 class ChatActivity : AppCompatActivity(), ChatContract.View {
@@ -29,7 +28,6 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
     private lateinit var profileBtn: ImageView
 
     private lateinit var backBtn: TextView
-    private lateinit var logoutBtn: TextView
     private lateinit var newChatBtn: Button
     private lateinit var settingsBtn: Button
     private lateinit var sessionListContainer: LinearLayout
@@ -47,6 +45,9 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        window.statusBarColor = Color.parseColor("#8B0000")
+        window.navigationBarColor = Color.BLACK
 
         userId = intent.getLongExtra("USER_ID", -1L)
         email = intent.getStringExtra("EMAIL") ?: ""
@@ -71,12 +72,15 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         chatContainer = findViewById(R.id.chatContainer)
         chatScroll = findViewById(R.id.chatScroll)
 
+        messageInput.setTextColor(Color.parseColor("#111111"))
+        messageInput.setHintTextColor(Color.parseColor("#777777"))
+        messageInput.alpha = 1f
+
         drawerLayout = findViewById(R.id.drawerLayout)
         menuBtn = findViewById(R.id.menuBtn)
         profileBtn = findViewById(R.id.profileBtn)
 
         backBtn = findViewById(R.id.backBtn)
-        logoutBtn = findViewById(R.id.logoutBtn)
         newChatBtn = findViewById(R.id.newChatBtn)
         settingsBtn = findViewById(R.id.settingsBtn)
         sessionListContainer = findViewById(R.id.sessionListContainer)
@@ -103,10 +107,6 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
         profileBtn.setOnClickListener {
             openSettings()
-        }
-
-        logoutBtn.setOnClickListener {
-            logout()
         }
 
         sendBtn.setOnClickListener {
@@ -143,13 +143,6 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         startActivity(intent)
     }
 
-    private fun logout() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
-    }
-
     override fun addUserMessage(message: String) {
         val wrapper = LinearLayout(this)
         wrapper.orientation = LinearLayout.HORIZONTAL
@@ -166,7 +159,7 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         val bubble = TextView(this)
         bubble.text = message
         bubble.setTextColor(Color.BLACK)
-        bubble.textSize = 16f
+        bubble.textSize = 20f
         bubble.setPadding(24, 18, 24, 18)
         bubble.setBackgroundResource(R.drawable.bg_user_bubble)
 
@@ -197,14 +190,14 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         val logo = ImageView(this)
         logo.setImageResource(R.drawable.citu_logo)
 
-        val logoParams = LinearLayout.LayoutParams(50, 50)
+        val logoParams = LinearLayout.LayoutParams(80, 80)
         logoParams.setMargins(0, 10, 10, 0)
         logo.layoutParams = logoParams
 
         val bubble = TextView(this)
         bubble.text = message
         bubble.setTextColor(Color.BLACK)
-        bubble.textSize = 16f
+        bubble.textSize = 20f
         bubble.setPadding(24, 18, 24, 18)
         bubble.setBackgroundResource(R.drawable.bg_bot_bubble)
 
@@ -231,7 +224,7 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
     override fun showGreeting() {
         val greeting = TextView(this)
         greeting.text = "Hello! 👋 I'm your chatbot assistant.\nHow can I help you today?"
-        greeting.textSize = 15f
+        greeting.textSize = 20f
         greeting.setTextColor(Color.rgb(68, 68, 68))
         greeting.gravity = Gravity.CENTER
         greeting.setPadding(12, 12, 12, 28)
@@ -248,7 +241,11 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
     override fun showLoading(isLoading: Boolean) {
         sendBtn.isEnabled = !isLoading
-        messageInput.isEnabled = !isLoading
+
+        messageInput.isEnabled = true
+        messageInput.alpha = 1f
+        messageInput.setTextColor(Color.parseColor("#111111"))
+        messageInput.setHintTextColor(Color.parseColor("#777777"))
     }
 
     override fun showError(msg: String) {
@@ -273,9 +270,9 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
             sessionBtn.text = "▢  ${session.title}"
             sessionBtn.setTextColor(Color.WHITE)
-            sessionBtn.textSize = 14f
+            sessionBtn.textSize = 15f
             sessionBtn.maxLines = 1
-            sessionBtn.setPadding(8, 14, 8, 14)
+            sessionBtn.setPadding(10, 16, 10, 16)
             sessionBtn.setBackgroundColor(Color.TRANSPARENT)
 
             val params = LinearLayout.LayoutParams(

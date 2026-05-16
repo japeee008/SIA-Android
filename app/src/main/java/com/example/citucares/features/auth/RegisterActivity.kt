@@ -1,5 +1,6 @@
 package com.example.citucares.features.auth
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var studentIdInput: EditText
     lateinit var emailInput: EditText
     lateinit var passwordInput: EditText
-    lateinit var confirmPasswordInput: EditText // ✅ NEW
+    lateinit var confirmPasswordInput: EditText
     lateinit var fnameInput: EditText
     lateinit var lnameInput: EditText
     lateinit var miInput: EditText
@@ -25,17 +26,22 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        // Keeps the top system status bar consistent with CITU-CARE branding.
+        window.statusBarColor = Color.parseColor("#8B0000")
+
         studentIdInput = findViewById(R.id.studentIdInput)
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
-        confirmPasswordInput = findViewById(R.id.confirmPasswordInput) // ✅
+        confirmPasswordInput = findViewById(R.id.confirmPasswordInput)
         fnameInput = findViewById(R.id.fnameInput)
         lnameInput = findViewById(R.id.lnameInput)
         miInput = findViewById(R.id.miInput)
         registerBtn = findViewById(R.id.registerBtn)
         cancelBtn = findViewById(R.id.cancelBtn)
 
-        cancelBtn.setOnClickListener { finish() }
+        cancelBtn.setOnClickListener {
+            finish()
+        }
 
         registerBtn.setOnClickListener {
             registerUser()
@@ -44,17 +50,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser() {
 
-        val studentId = studentIdInput.text.toString()
-        val email = emailInput.text.toString()
+        val studentId = studentIdInput.text.toString().trim()
+        val email = emailInput.text.toString().trim()
         val password = passwordInput.text.toString()
-        val confirmPassword = confirmPasswordInput.text.toString() // ✅ FIX
-        val fname = fnameInput.text.toString()
-        val lname = lnameInput.text.toString()
-        val mi = miInput.text.toString()
+        val confirmPassword = confirmPasswordInput.text.toString()
+        val fname = fnameInput.text.toString().trim()
+        val lname = lnameInput.text.toString().trim()
+        val mi = miInput.text.toString().trim()
 
         if (studentId.isEmpty() || email.isEmpty() || password.isEmpty()
-            || fname.isEmpty() || lname.isEmpty()) {
-
+            || confirmPassword.isEmpty() || fname.isEmpty() || lname.isEmpty()
+        ) {
             toast("Please fill all required fields ❌")
             return
         }
@@ -71,10 +77,10 @@ class RegisterActivity : AppCompatActivity() {
             middleInitial = mi,
             email = email,
             password = password,
-            confirmPassword = confirmPassword, // ✅ FIXED
+            confirmPassword = confirmPassword
         )
 
-        println("REQUEST DEBUG: $request") // 🔥 DEBUG
+        println("REQUEST DEBUG: $request")
 
         RetrofitClient.instance.registerUser(request)
             .enqueue(object : Callback<String> {
