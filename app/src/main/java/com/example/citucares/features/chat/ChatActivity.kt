@@ -2,6 +2,7 @@ package com.example.citucares.features.chat
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.*
@@ -32,7 +33,16 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        presenter = ChatPresenter(this)
+        val userId = intent.getLongExtra("USER_ID", -1L)
+        Log.d("CHAT_USER_ID", "Received userId: $userId")
+
+        if (userId == -1L) {
+            Toast.makeText(this, "User session error. Please login again.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        presenter = ChatPresenter(this, userId)
 
         messageInput = findViewById(R.id.messageInput)
         sendBtn = findViewById(R.id.sendBtn)
@@ -86,7 +96,7 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         val bubble = TextView(this)
         bubble.text = message
         bubble.setTextColor(Color.BLACK)
-        bubble.setTextSize(16f)
+        bubble.textSize = 16f
         bubble.setPadding(24, 18, 24, 18)
         bubble.setBackgroundResource(R.drawable.bg_user_bubble)
 
@@ -124,7 +134,7 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
         val bubble = TextView(this)
         bubble.text = message
         bubble.setTextColor(Color.BLACK)
-        bubble.setTextSize(16f)
+        bubble.textSize = 16f
         bubble.setPadding(24, 18, 24, 18)
         bubble.setBackgroundResource(R.drawable.bg_bot_bubble)
 
@@ -145,7 +155,7 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
     }
 
     override fun showLoading(isLoading: Boolean) {
-        // optional
+        sendBtn.isEnabled = !isLoading
     }
 
     override fun showError(msg: String) {

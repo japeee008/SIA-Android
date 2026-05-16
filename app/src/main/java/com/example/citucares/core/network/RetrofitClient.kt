@@ -8,7 +8,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 object RetrofitClient {
 
     // Emulator
-    private const val BASE_URL = "http://10.0.2.2:8080/api/"
+    private const val BASE_URL = "https://citucare-backend.onrender.com/api/"
 
     // Real phone example:
     // private const val BASE_URL = "http://192.168.1.5:8080/api/"
