@@ -2,6 +2,7 @@ package com.example.citucares.features.chat
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -158,10 +159,12 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
         val bubble = TextView(this)
         bubble.text = message
-        bubble.setTextColor(Color.BLACK)
+        bubble.setTextColor(Color.WHITE)
         bubble.textSize = 20f
         bubble.setPadding(24, 18, 24, 18)
-        bubble.setBackgroundResource(R.drawable.bg_user_bubble)
+        bubble.background = createBubbleBackground(
+            fillColor = "#810000"
+        )
 
         val params = LinearLayout.LayoutParams(
             (resources.displayMetrics.widthPixels * 0.75).toInt(),
@@ -196,10 +199,13 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
         val bubble = TextView(this)
         bubble.text = message
-        bubble.setTextColor(Color.BLACK)
+        bubble.setTextColor(Color.parseColor("#111111"))
         bubble.textSize = 20f
         bubble.setPadding(24, 18, 24, 18)
-        bubble.setBackgroundResource(R.drawable.bg_bot_bubble)
+        bubble.background = createBubbleBackground(
+            fillColor = "#FFFFFF",
+            strokeColor = "#E5E7EB"
+        )
 
         val bubbleParams = LinearLayout.LayoutParams(
             (resources.displayMetrics.widthPixels * 0.68).toInt(),
@@ -292,6 +298,21 @@ class ChatActivity : AppCompatActivity(), ChatContract.View {
 
     override fun closeSidebar() {
         drawerLayout.closeDrawer(GravityCompat.START)
+    }
+
+    private fun createBubbleBackground(
+        fillColor: String,
+        strokeColor: String? = null
+    ): GradientDrawable {
+        return GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 28f
+            setColor(Color.parseColor(fillColor))
+
+            if (strokeColor != null) {
+                setStroke(2, Color.parseColor(strokeColor))
+            }
+        }
     }
 
     private fun scrollToBottom() {
